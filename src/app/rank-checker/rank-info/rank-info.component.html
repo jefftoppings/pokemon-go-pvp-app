@@ -74,9 +74,18 @@
       [clearInput]="true"
       (ionInput)="handleStaminaChange($event.detail.value || '')"
     ></ion-input>
+    <div class="button-container">
+      <div
+        class="calculate-button"
+        [ngClass]="{ 'calculate-disabled': ivsFormGroup.invalid }"
+        (click)="handleCalculateClick()"
+      >
+        Calculate
+      </div>
+    </div>
   </ion-card-content>
 </ion-card>
 
-<ng-container *ngIf="rankInfoForEvolutions$ | async as rankInfoForEvolutions">
+<ng-container *ngIf="rankInfoForEvolutions() as rankInfoForEvolutions">
   <span>rank info exists</span>
 </ng-container>

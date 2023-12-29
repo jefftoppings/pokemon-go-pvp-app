@@ -16,10 +16,10 @@ import {
   IonThumbnail,
   IonInput,
 } from '@ionic/angular/standalone';
-import { Observable, catchError, map, of, switchMap } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { PokemonTypeColorMap } from '../../constants';
 import { Pokemon, PokemonRankInfoForEvolutions } from '../../interfaces';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RankService } from '../rank.service';
 
 @Component({
@@ -49,34 +49,26 @@ export class RankInfoComponent implements OnInit {
   badgeConfig$!: Observable<{ text: string; color: string }[] | null>;
   PokemonTypeColorMap = PokemonTypeColorMap;
   ivsFormGroup: FormGroup = new FormGroup({
-    attack: new FormControl<number | null>(null),
-    defense: new FormControl<number | null>(null),
-    stamina: new FormControl<number | null>(null),
+    attack: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(15),
+    ]),
+    defense: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(15),
+    ]),
+    stamina: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(15),
+    ]),
   });
-  rankInfoForEvolutions$!: Observable<PokemonRankInfoForEvolutions | null>;
+  rankInfoForEvolutions: WritableSignal<PokemonRankInfoForEvolutions | null> =
+    signal(null);
 
-  constructor(private rankService: RankService) {
-    this.rankInfoForEvolutions$ = this.ivsFormGroup.valueChanges.pipe(
-      switchMap((ivs) => {
-        if (
-          Object.values(ivs).every(
-            (value) => value !== undefined && value !== null
-          )
-        ) {
-          return this.rankService.getRankInfoForEvolutions(
-            this._pokemon()?.id || '',
-            {
-              atk: ivs.attack,
-              def: ivs.defense,
-              hp: ivs.stamina,
-            }
-          );
-        }
-        return of(null);
-      }),
-      catchError(() => of(null))
-    );
-  }
+  constructor(private rankService: RankService) {}
 
   ngOnInit() {
     this.badgeConfig$ = this.pokemon$.pipe(
@@ -115,5 +107,24 @@ export class RankInfoComponent implements OnInit {
   handleStaminaChange(value: string) {
     const stamina: number | null = value ? parseInt(value, 10) : null;
     this.ivsFormGroup.get('stamina')?.setValue(stamina);
+  }
+
+  handleCalculateClick(): void {
+    console.log('handleCalculateClick');
+    // TODO loading
+    const ivs = this.ivsFormGroup.value;
+    this.rankService
+      .getRankInfoForEvolutions(this._pokemon()?.id || '', {
+        atk: ivs.attack,
+        def: ivs.defense,
+        hp: ivs.stamina,
+      })
+      .pipe(
+        take(1),
+        catchError(() => of(null))
+      )
+      .subscribe((rankInfoForEvolutions) =>
+        this.rankInfoForEvolutions.set(rankInfoForEvolutions)
+      );
   }
 }

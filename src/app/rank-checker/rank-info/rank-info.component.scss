@@ -16,3 +16,24 @@
     margin: 8px 0;
   }
 }
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  .calculate-button {
+    background: var(--ion-color-primary);
+    color: var(--ion-text-color);
+    width: fit-content;
+    padding: 8px;
+    border-radius: 4px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .calculate-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(100%);
+  }
+}
