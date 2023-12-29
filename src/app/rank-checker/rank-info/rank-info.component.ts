@@ -13,6 +13,7 @@ import {
   IonCardTitle,
   IonCardContent,
   IonChip,
+  IonThumbnail
 } from '@ionic/angular/standalone';
 import { Observable, map } from 'rxjs';
 import { PokemonTypeColorMap } from '../../constants';
@@ -30,6 +31,7 @@ import { Pokemon } from '../../interfaces';
     IonCardTitle,
     IonCardContent,
     IonChip,
+    IonThumbnail
   ],
 })
 export class RankInfoComponent implements OnInit {
