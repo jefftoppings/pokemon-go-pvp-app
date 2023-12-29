@@ -20,7 +20,7 @@ import {
   IonList,
   IonItem,
 } from '@ionic/angular/standalone';
-import { Observable, debounceTime, startWith, switchMap } from 'rxjs';
+import { Observable, debounceTime, switchMap } from 'rxjs';
 import { Pokemon } from '../interfaces';
 import { RankService } from './rank.service';
 import { CommonModule } from '@angular/common';
@@ -66,7 +66,6 @@ export class RankCheckerPage {
 
   constructor(private rankService: RankService) {
     this.results$ = this.searchControl.valueChanges.pipe(
-      startWith(''),
       takeUntilDestroyed(),
       debounceTime(200),
       switchMap((value) => this.rankService.searchPokemon(value || ''))

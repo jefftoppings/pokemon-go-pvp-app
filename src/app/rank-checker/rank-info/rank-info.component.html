@@ -35,3 +35,44 @@
     </div>
   </ion-card-content>
 </ion-card>
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Enter IV's</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-input
+      label="Attack"
+      label-placement="fixed"
+      fill="outline"
+      type="number"
+      min="0"
+      max="15"
+      autocomplete="off"
+      [clearInput]="true"
+      (ionInput)="handleAttackChange($event.detail.value || '')"
+    ></ion-input>
+    <ion-input
+      label="Defense"
+      label-placement="fixed"
+      fill="outline"
+      type="number"
+      min="0"
+      max="15"
+      autocomplete="off"
+      [clearInput]="true"
+      (ionInput)="handleDefenseChange($event.detail.value || '')"
+    ></ion-input>
+    <ion-input
+      label="Stamina"
+      label-placement="fixed"
+      fill="outline"
+      type="number"
+      min="0"
+      max="15"
+      autocomplete="off"
+      [clearInput]="true"
+      (ionInput)="handleStaminaChange($event.detail.value || '')"
+    ></ion-input>
+  </ion-card-content>
+</ion-card>

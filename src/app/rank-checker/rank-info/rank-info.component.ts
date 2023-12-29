@@ -13,11 +13,13 @@ import {
   IonCardTitle,
   IonCardContent,
   IonChip,
-  IonThumbnail
+  IonThumbnail,
+  IonInput,
 } from '@ionic/angular/standalone';
 import { Observable, map } from 'rxjs';
 import { PokemonTypeColorMap } from '../../constants';
 import { Pokemon } from '../../interfaces';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-rank-info',
@@ -31,7 +33,8 @@ import { Pokemon } from '../../interfaces';
     IonCardTitle,
     IonCardContent,
     IonChip,
-    IonThumbnail
+    IonThumbnail,
+    IonInput,
   ],
 })
 export class RankInfoComponent implements OnInit {
@@ -44,8 +47,15 @@ export class RankInfoComponent implements OnInit {
   pokemon$: Observable<Pokemon | null> = toObservable(this._pokemon);
   badgeConfig$!: Observable<{ text: string; color: string }[] | null>;
   PokemonTypeColorMap = PokemonTypeColorMap;
+  ivsFormGroup: FormGroup = new FormGroup({
+    attack: new FormControl<number | null>(null),
+    defense: new FormControl<number | null>(null),
+    stamina: new FormControl<number | null>(null),
+  });
 
-  constructor() {}
+  constructor() {
+    this.ivsFormGroup.valueChanges.subscribe(console.log);
+  }
 
   ngOnInit() {
     this.badgeConfig$ = this.pokemon$.pipe(
@@ -69,5 +79,20 @@ export class RankInfoComponent implements OnInit {
         return null;
       })
     );
+  }
+
+  handleAttackChange(value: string) {
+    const attack: number | null = value ? parseInt(value, 10) : null;
+    this.ivsFormGroup.get('attack')?.setValue(attack);
+  }
+
+  handleDefenseChange(value: string) {
+    const defense: number | null = value ? parseInt(value, 10) : null;
+    this.ivsFormGroup.get('defense')?.setValue(defense);
+  }
+
+  handleStaminaChange(value: string) {
+    const stamina: number | null = value ? parseInt(value, 10) : null;
+    this.ivsFormGroup.get('stamina')?.setValue(stamina);
   }
 }
