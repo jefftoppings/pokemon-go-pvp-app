@@ -1,0 +1,7 @@
+{
+  "name": "pokemon-go-pvp-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
