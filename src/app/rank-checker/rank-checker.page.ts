@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, WritableSignal, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -17,12 +17,14 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonList,IonItem
+  IonList,
+  IonItem,
 } from '@ionic/angular/standalone';
 import { Observable, debounceTime, startWith, switchMap } from 'rxjs';
 import { Pokemon } from '../interfaces';
 import { RankService } from './rank.service';
 import { CommonModule } from '@angular/common';
+import { RankInfoComponent } from './rank-info/rank-info.component';
 
 @Component({
   selector: 'app-rank-checker',
@@ -46,9 +48,11 @@ import { CommonModule } from '@angular/common';
     IonGrid,
     IonRow,
     IonCol,
-    IonList,IonItem,
+    IonList,
+    IonItem,
     FormsModule,
     ReactiveFormsModule,
+    RankInfoComponent,
   ],
 })
 export class RankCheckerPage {
@@ -57,6 +61,8 @@ export class RankCheckerPage {
     string | null
   >('');
   results$!: Observable<Pokemon[]>;
+  selectedPokemonId: WritableSignal<string> = signal('');
+  showResults: WritableSignal<boolean> = signal(true);
 
   constructor(private rankService: RankService) {
     this.results$ = this.searchControl.valueChanges.pipe(
@@ -69,5 +75,13 @@ export class RankCheckerPage {
 
   handleSearchTermChange(value: string): void {
     this.searchControl.setValue(value);
+    this.showResults.set(true);
+    this.selectedPokemonId.set('');
+  }
+
+  handlePokemonSelected(pokemonId: string): void {
+    this.selectedPokemonId.set(pokemonId);
+    this.searchTerm = pokemonId;
+    this.showResults.set(false);
   }
 }

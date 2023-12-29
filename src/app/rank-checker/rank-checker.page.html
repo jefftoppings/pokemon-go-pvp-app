@@ -17,13 +17,18 @@
       label-placement="floating"
       fill="outline"
       placeholder="Search for Pokemon"
+      [clearInput]="true"
       [(ngModel)]="searchTerm"
       (ionInput)="handleSearchTermChange($event.detail.value || '')"
     ></ion-input>
     <ng-container *ngIf="results$ | async as results">
-      <ng-container *ngIf="results.length > 0">
+      <ng-container *ngIf="results.length > 0 && showResults()">
         <ion-list>
-          <ion-item *ngFor="let pokemon of results">
+          <ion-item
+            *ngFor="let pokemon of results"
+            (click)="handlePokemonSelected(pokemon.id)"
+            class="list-item"
+          >
             <ion-thumbnail slot="start">
               <img
                 [alt]="pokemon.names['English']"
@@ -35,5 +40,10 @@
         </ion-list>
       </ng-container>
     </ng-container>
+
+    <app-rank-info
+      *ngIf="selectedPokemonId() as id"
+      [pokemonId]="id"
+    ></app-rank-info>
   </div>
 </ion-content>
