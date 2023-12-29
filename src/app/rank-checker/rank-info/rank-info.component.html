@@ -76,3 +76,7 @@
     ></ion-input>
   </ion-card-content>
 </ion-card>
+
+<ng-container *ngIf="rankInfoForEvolutions$ | async as rankInfoForEvolutions">
+  <span>rank info exists</span>
+</ng-container>

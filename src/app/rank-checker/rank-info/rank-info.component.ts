@@ -16,10 +16,11 @@ import {
   IonThumbnail,
   IonInput,
 } from '@ionic/angular/standalone';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of, switchMap } from 'rxjs';
 import { PokemonTypeColorMap } from '../../constants';
-import { Pokemon } from '../../interfaces';
+import { Pokemon, PokemonRankInfoForEvolutions } from '../../interfaces';
 import { FormControl, FormGroup } from '@angular/forms';
+import { RankService } from '../rank.service';
 
 @Component({
   selector: 'app-rank-info',
@@ -52,9 +53,29 @@ export class RankInfoComponent implements OnInit {
     defense: new FormControl<number | null>(null),
     stamina: new FormControl<number | null>(null),
   });
+  rankInfoForEvolutions$!: Observable<PokemonRankInfoForEvolutions | null>;
 
-  constructor() {
-    this.ivsFormGroup.valueChanges.subscribe(console.log);
+  constructor(private rankService: RankService) {
+    this.rankInfoForEvolutions$ = this.ivsFormGroup.valueChanges.pipe(
+      switchMap((ivs) => {
+        if (
+          Object.values(ivs).every(
+            (value) => value !== undefined && value !== null
+          )
+        ) {
+          return this.rankService.getRankInfoForEvolutions(
+            this._pokemon()?.id || '',
+            {
+              atk: ivs.attack,
+              def: ivs.defense,
+              hp: ivs.stamina,
+            }
+          );
+        }
+        return of(null);
+      }),
+      catchError(() => of(null))
+    );
   }
 
   ngOnInit() {

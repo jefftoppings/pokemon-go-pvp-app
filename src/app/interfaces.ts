@@ -62,7 +62,7 @@ export interface PokemonData {
   [pokemon: string]: EvolutionData;
 }
 
-export interface PokemonInfo {
+export interface PokemonRankInfoForEvolutions {
   evolutions: string[];
   rankForEvolutions: PokemonData;
 }
