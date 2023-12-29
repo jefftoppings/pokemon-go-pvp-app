@@ -13,13 +13,13 @@ export const routes: Routes = [
             (m) => m.RankCheckerPage
           ),
       },
-      {
-        path: 'cmp-checker',
-        loadComponent: () =>
-          import('../cmp-checker/cmp-checker.page').then(
-            (m) => m.CMPCheckerPage
-          ),
-      },
+      // {
+      //   path: 'cmp-checker',
+      //   loadComponent: () =>
+      //     import('../cmp-checker/cmp-checker.page').then(
+      //       (m) => m.CMPCheckerPage
+      //     ),
+      // },
       {
         path: '',
         redirectTo: '/tabs/rank-checker',
