@@ -30,3 +30,39 @@ export interface Pokemon {
     evolvedPokemonID: string;
   }[];
 }
+
+export interface RankInfo {
+  all: number;
+  bestFriend: number;
+  goodFriend: number;
+  greatFriend: number;
+  hatched: number;
+  luckyFriend: number;
+  ultraFriend: number;
+  weatherBoosted: number;
+}
+
+export interface Stats {
+  atk: number;
+  def: number;
+  hp: number;
+}
+
+export interface EvolutionData {
+  ranks: RankInfo;
+  ivs: string;
+  level: number;
+  cp: number;
+  statProduct: number;
+  percent: number;
+  stats: Stats;
+}
+
+export interface PokemonData {
+  [pokemon: string]: EvolutionData;
+}
+
+export interface PokemonInfo {
+  evolutions: string[];
+  rankForEvolutions: PokemonData;
+}
