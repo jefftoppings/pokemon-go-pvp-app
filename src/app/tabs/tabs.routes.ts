@@ -7,19 +7,18 @@ export const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'rank-checker',
         loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
+          import('../rank-checker/rank-checker.page').then(
+            (m) => m.RankCheckerPage
+          ),
       },
       {
-        path: 'tab2',
+        path: 'cmp-checker',
         loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
-      },
-      {
-        path: 'tab3',
-        loadComponent: () =>
-          import('../tab3/tab3.page').then((m) => m.Tab3Page),
+          import('../cmp-checker/cmp-checker.page').then(
+            (m) => m.CMPCheckerPage
+          ),
       },
       {
         path: '',
