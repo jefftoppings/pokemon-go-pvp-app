@@ -1,0 +1,12 @@
+.content-container {
+  display: flex;
+  flex-direction: column;
+  .badge-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+}

@@ -61,7 +61,7 @@ export class RankCheckerPage {
     string | null
   >('');
   results$!: Observable<Pokemon[]>;
-  selectedPokemonId: WritableSignal<string> = signal('');
+  selectedPokemon: WritableSignal<Pokemon | null> = signal(null);
   showResults: WritableSignal<boolean> = signal(true);
 
   constructor(private rankService: RankService) {
@@ -76,12 +76,12 @@ export class RankCheckerPage {
   handleSearchTermChange(value: string): void {
     this.searchControl.setValue(value);
     this.showResults.set(true);
-    this.selectedPokemonId.set('');
+    this.selectedPokemon.set(null);
   }
 
-  handlePokemonSelected(pokemonId: string): void {
-    this.selectedPokemonId.set(pokemonId);
-    this.searchTerm = pokemonId;
+  handlePokemonSelected(pokemon: Pokemon): void {
+    this.selectedPokemon.set(pokemon);
+    this.searchTerm = pokemon.names['English'];
     this.showResults.set(false);
   }
 }

@@ -7,15 +7,21 @@ export interface Pokemon {
     [languageCode: string]: string;
   };
   stats: {
-    hp: number;
+    stamina: number;
     attack: number;
     defense: number;
   };
   primaryType: {
-    typeName: string;
+    type: string;
+    names: {
+      [languageCode: string]: string;
+    };
   };
   secondaryType: {
-    typeName: string;
+    type: string;
+    names: {
+      [languageCode: string]: string;
+    };
   };
   assets: {
     image: string;

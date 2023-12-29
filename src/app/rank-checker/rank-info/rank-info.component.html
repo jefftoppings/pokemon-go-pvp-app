@@ -1,5 +1,35 @@
-<ion-card *ngIf="_pokemonId()">
-  <ion-card-header>
-    <ion-card-title>{{ _pokemonId() }}</ion-card-title>
-  </ion-card-header>
+<ion-card *ngIf="pokemon$ | async as pokemon" color="dark">
+  <img
+    [alt]="pokemon.names['English']"
+    [src]="
+      pokemon.assets.image ||
+      'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/' +
+        pokemon.dexNr +
+        '.png'
+    "
+  />
+  <ion-card-content>
+    <div class="content-container">
+      <div *ngIf="badgeConfig$ | async as badges" class="badge-container">
+        <ion-chip
+          *ngFor="let badge of badges"
+          [ngStyle]="{
+          '--background': badge.color,
+        }"
+          >{{ badge.text }}</ion-chip
+        >
+      </div>
+      <div class="stats-container">
+        <div>
+          Attack: <span>{{ pokemon.stats.attack }}</span>
+        </div>
+        <div>
+          Defense: <span>{{ pokemon.stats.defense }}</span>
+        </div>
+        <div>
+          Stamina: <span>{{ pokemon.stats.stamina }}</span>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
 </ion-card>
