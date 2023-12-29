@@ -76,12 +76,16 @@
     ></ion-input>
     <div class="button-container">
       <div
+        *ngIf="!loading(); else loadingSpinner"
         class="calculate-button"
         [ngClass]="{ 'calculate-disabled': ivsFormGroup.invalid }"
         (click)="handleCalculateClick()"
       >
         Calculate
       </div>
+      <ng-template #loadingSpinner>
+        <ion-spinner></ion-spinner>
+      </ng-template>
     </div>
   </ion-card-content>
 </ion-card>

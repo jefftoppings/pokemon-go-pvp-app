@@ -15,6 +15,7 @@ import {
   IonChip,
   IonThumbnail,
   IonInput,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { PokemonTypeColorMap } from '../../constants';
@@ -36,6 +37,7 @@ import { RankService } from '../rank.service';
     IonChip,
     IonThumbnail,
     IonInput,
+    IonSpinner,
   ],
 })
 export class RankInfoComponent implements OnInit {
@@ -67,6 +69,7 @@ export class RankInfoComponent implements OnInit {
   });
   rankInfoForEvolutions: WritableSignal<PokemonRankInfoForEvolutions | null> =
     signal(null);
+  loading: WritableSignal<boolean> = signal(false);
 
   constructor(private rankService: RankService) {}
 
@@ -110,8 +113,7 @@ export class RankInfoComponent implements OnInit {
   }
 
   handleCalculateClick(): void {
-    console.log('handleCalculateClick');
-    // TODO loading
+    this.loading.set(true);
     const ivs = this.ivsFormGroup.value;
     this.rankService
       .getRankInfoForEvolutions(this._pokemon()?.id || '', {
@@ -123,8 +125,13 @@ export class RankInfoComponent implements OnInit {
         take(1),
         catchError(() => of(null))
       )
-      .subscribe((rankInfoForEvolutions) =>
-        this.rankInfoForEvolutions.set(rankInfoForEvolutions)
-      );
+      .subscribe({
+        next: (rankInfoForEvolutions) => {
+          this.rankInfoForEvolutions.set(rankInfoForEvolutions);
+          this.loading.set(false);
+        },
+        error: () => this.loading.set(false),
+        complete: () => this.loading.set(false),
+      });
   }
 }
