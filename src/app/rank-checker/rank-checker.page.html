@@ -20,5 +20,20 @@
       [(ngModel)]="searchTerm"
       (ionInput)="handleSearchTermChange($event.detail.value || '')"
     ></ion-input>
+    <ng-container *ngIf="results$ | async as results">
+      <ng-container *ngIf="results.length > 0">
+        <ion-list>
+          <ion-item *ngFor="let pokemon of results">
+            <ion-thumbnail slot="start">
+              <img
+                [alt]="pokemon.names['English']"
+                [src]="pokemon.assets.image || 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/'+pokemon.dexNr+'.png'"
+              />
+            </ion-thumbnail>
+            <ion-label>{{ pokemon.names['English'] }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+    </ng-container>
   </div>
 </ion-content>

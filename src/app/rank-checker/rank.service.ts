@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pokemon } from '../interfaces';
 
+// TODO call in production
 const API_URL = 'https://pgo-pvp-jtoppings.koyeb.app';
 
 @Injectable({
@@ -17,7 +18,7 @@ export class RankService {
     });
     const params = new HttpParams().set('name', searchTerm).set('pageSize', 5);
 
-    return this.httpClient.get<Pokemon[]>(`${API_URL}/api/search-pokemon`, {
+    return this.httpClient.get<Pokemon[]>('/api/search-pokemon', {
       headers,
       params,
     });

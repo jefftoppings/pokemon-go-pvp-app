@@ -7,10 +7,22 @@ import {
   IonTitle,
   IonContent,
   IonInput,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonThumbnail,
+  IonLabel,
+  IonBadge,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonList,IonItem
 } from '@ionic/angular/standalone';
-import { Observable, debounceTime, switchMap } from 'rxjs';
+import { Observable, debounceTime, startWith, switchMap } from 'rxjs';
 import { Pokemon } from '../interfaces';
 import { RankService } from './rank.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-rank-checker',
@@ -18,11 +30,23 @@ import { RankService } from './rank.service';
   styleUrls: ['rank-checker.page.scss'],
   standalone: true,
   imports: [
+    CommonModule,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
     IonInput,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonThumbnail,
+    IonLabel,
+    IonBadge,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonList,IonItem,
     FormsModule,
     ReactiveFormsModule,
   ],
@@ -36,14 +60,11 @@ export class RankCheckerPage {
 
   constructor(private rankService: RankService) {
     this.results$ = this.searchControl.valueChanges.pipe(
+      startWith(''),
       takeUntilDestroyed(),
       debounceTime(200),
       switchMap((value) => this.rankService.searchPokemon(value || ''))
     );
-
-    this.results$.subscribe((value) => {
-      console.log(value);
-    });
   }
 
   handleSearchTermChange(value: string): void {

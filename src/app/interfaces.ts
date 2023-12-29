@@ -18,7 +18,7 @@ export interface Pokemon {
     typeName: string;
   };
   assets: {
-    evolvedPokemonID: string;
+    image: string;
   };
   evolutions: {
     evolvedPokemonID: string;
