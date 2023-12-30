@@ -20,29 +20,29 @@
       [(ngModel)]="searchTerm"
       (ionInput)="handleSearchTermChange($event.detail.value || '')"
     ></ion-input>
-    <ng-container *ngIf="results$ | async as results">
-      <ng-container *ngIf="results.length > 0 && showResults()">
-        <ion-list>
-          <ion-item
-            *ngFor="let pokemon of results"
-            (click)="handlePokemonSelected(pokemon)"
-            class="list-item"
-          >
-            <ion-thumbnail slot="start">
-              <img
-                [alt]="pokemon.names['English']"
-                [src]="pokemon.assets.image || 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/'+pokemon.dexNr+'.png'"
-              />
-            </ion-thumbnail>
-            <ion-label>{{ pokemon.names['English'] }}</ion-label>
-          </ion-item>
-        </ion-list>
+    <ng-container *ngIf="showResults()">
+      <ion-progress-bar *ngIf="loading()" type="indeterminate"></ion-progress-bar>
+      <ng-container *ngIf="results$ | async as results">
+        <ng-container *ngIf="results.length > 0">
+          <ion-list>
+            <ion-item
+              *ngFor="let pokemon of results"
+              (click)="handlePokemonSelected(pokemon)"
+              class="list-item"
+            >
+              <ion-thumbnail slot="start">
+                <img
+                  [alt]="pokemon.names['English']"
+                  [src]="pokemon.assets.image || 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/'+pokemon.dexNr+'.png'"
+                />
+              </ion-thumbnail>
+              <ion-label>{{ pokemon.names['English'] }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ng-container>
       </ng-container>
     </ng-container>
 
-    <app-rank-info
-      *ngIf="selectedPokemon() as p"
-      [pokemon]="p"
-    ></app-rank-info>
+    <app-rank-info *ngIf="selectedPokemon() as p" [pokemon]="p"></app-rank-info>
   </div>
 </ion-content>

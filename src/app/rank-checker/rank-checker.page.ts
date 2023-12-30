@@ -15,8 +15,19 @@ import {
   IonCol,
   IonList,
   IonItem,
+  IonProgressBar,
 } from '@ionic/angular/standalone';
-import { Observable, debounceTime, switchMap } from 'rxjs';
+import { ToastController } from '@ionic/angular';
+import {
+  Observable,
+  catchError,
+  debounceTime,
+  finalize,
+  from,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { Pokemon } from '../interfaces';
 import { RankService } from './rank.service';
 import { CommonModule } from '@angular/common';
@@ -42,6 +53,7 @@ import { RankInfoComponent } from './rank-info/rank-info.component';
     IonCol,
     IonList,
     IonItem,
+    IonProgressBar,
     FormsModule,
     ReactiveFormsModule,
     RankInfoComponent,
@@ -55,12 +67,22 @@ export class RankCheckerPage {
   results$!: Observable<Pokemon[]>;
   selectedPokemon: WritableSignal<Pokemon | null> = signal(null);
   showResults: WritableSignal<boolean> = signal(true);
+  loading: WritableSignal<boolean> = signal(false);
 
-  constructor(private rankService: RankService) {
+  constructor(
+    private rankService: RankService,
+    private toastController: ToastController
+  ) {
     this.results$ = this.searchControl.valueChanges.pipe(
       takeUntilDestroyed(),
       debounceTime(200),
-      switchMap((value) => this.rankService.searchPokemon(value || ''))
+      tap(() => this.loading.set(true)),
+      switchMap((value) => this.rankService.searchPokemon(value || '')),
+      catchError((error) => {
+        return from(this.showErrorMessage(error)).pipe(map(() => []));
+      }),
+      tap(() => this.loading.set(false)),
+      finalize(() => this.loading.set(false))
     );
   }
 
@@ -74,5 +96,14 @@ export class RankCheckerPage {
     this.selectedPokemon.set(pokemon);
     this.searchTerm = pokemon.names['English'];
     this.showResults.set(false);
+  }
+
+  async showErrorMessage(error?: string): Promise<void> {
+    const toast = await this.toastController.create({
+      message:
+        'There was an error loading results' + (error ? ': ' + error : ''),
+      duration: 3000,
+    });
+    return toast.present();
   }
 }
