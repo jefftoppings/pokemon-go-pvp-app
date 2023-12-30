@@ -8,7 +8,8 @@ import {
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { IonChip, IonInput, IonSpinner } from '@ionic/angular/standalone';
-import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
+import { ToastController } from '@ionic/angular';
+import { Observable, catchError, from, map, of, switchMap, take } from 'rxjs';
 import { PokemonTypeColorMap } from '../../constants';
 import { Pokemon, PokemonRankInfoForEvolutions } from '../../interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -52,7 +53,10 @@ export class RankInfoComponent implements OnInit {
     signal(null);
   loading: WritableSignal<boolean> = signal(false);
 
-  constructor(private rankService: RankService) {}
+  constructor(
+    private rankService: RankService,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
     this.badgeConfig$ = this.pokemon$.pipe(
@@ -104,7 +108,9 @@ export class RankInfoComponent implements OnInit {
       })
       .pipe(
         take(1),
-        catchError(() => of(null))
+        catchError((err) => {
+          return from(this.showErrorMessage(err.message)).pipe(map(() => null));
+        })
       )
       .subscribe({
         next: (rankInfoForEvolutions) => {
@@ -114,5 +120,13 @@ export class RankInfoComponent implements OnInit {
         error: () => this.loading.set(false),
         complete: () => this.loading.set(false),
       });
+  }
+
+  async showErrorMessage(error?: string): Promise<void> {
+    const toast = await this.toastController.create({
+      message: 'There was an error' + (error ? ': ' + error : ''),
+      duration: 3000,
+    });
+    return toast.present();
   }
 }
