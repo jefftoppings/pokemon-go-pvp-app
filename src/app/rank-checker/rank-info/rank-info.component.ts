@@ -7,16 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonChip,
-  IonThumbnail,
-  IonInput,
-  IonSpinner,
-} from '@ionic/angular/standalone';
+import { IonChip, IonInput, IonSpinner } from '@ionic/angular/standalone';
 import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { PokemonTypeColorMap } from '../../constants';
 import { Pokemon, PokemonRankInfoForEvolutions } from '../../interfaces';
@@ -28,17 +19,7 @@ import { RankService } from '../rank.service';
   standalone: true,
   templateUrl: './rank-info.component.html',
   styleUrls: ['./rank-info.component.scss'],
-  imports: [
-    CommonModule,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonChip,
-    IonThumbnail,
-    IonInput,
-    IonSpinner,
-  ],
+  imports: [CommonModule, IonChip, IonInput, IonSpinner],
 })
 export class RankInfoComponent implements OnInit {
   @Input() set pokemon(pokemon: Pokemon) {

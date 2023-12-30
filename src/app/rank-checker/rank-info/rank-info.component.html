@@ -1,46 +1,40 @@
-<ion-card *ngIf="pokemon$ | async as pokemon" color="dark">
-  <ion-card-content>
-    <div class="content-container">
-      <ion-thumbnail>
-        <img
-          [alt]="pokemon.names['English']"
-          [src]="
-            pokemon.assets.image ||
-            'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/' +
-              pokemon.dexNr +
-              '.png'
-          "
-        />
-      </ion-thumbnail>
-      <div *ngIf="badgeConfig$ | async as badges" class="badge-container">
-        <ion-chip
-          *ngFor="let badge of badges"
-          [ngStyle]="{
-          '--background': badge.color,
-        }"
-          >{{ badge.text }}</ion-chip
-        >
+<div *ngIf="pokemon$ | async as pokemon" class="content-container">
+  <img
+    [alt]="pokemon.names['English']"
+    [src]="
+      pokemon.assets.image ||
+      'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/' +
+        pokemon.dexNr +
+        '.png'
+    "
+  />
+  <div class="inner-container">
+    <div *ngIf="badgeConfig$ | async as badges" class="badge-container">
+      <ion-chip
+        *ngFor="let badge of badges"
+        [ngStyle]="{
+            '--background': badge.color,
+          }"
+        >{{ badge.text }}</ion-chip
+      >
+    </div>
+    <div class="stats-container">
+      <div>
+        Attack: <span>{{ pokemon.stats.attack }}</span>
       </div>
-      <div class="stats-container">
-        <div>
-          Attack: <span>{{ pokemon.stats.attack }}</span>
-        </div>
-        <div>
-          Defense: <span>{{ pokemon.stats.defense }}</span>
-        </div>
-        <div>
-          Stamina: <span>{{ pokemon.stats.stamina }}</span>
-        </div>
+      <div>
+        Defense: <span>{{ pokemon.stats.defense }}</span>
+      </div>
+      <div>
+        Stamina: <span>{{ pokemon.stats.stamina }}</span>
       </div>
     </div>
-  </ion-card-content>
-</ion-card>
+  </div>
+</div>
 
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Enter IV's</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
+<div class="iv-container">
+  <div class="title">Enter IV's</div>
+  <div class="inputs-container">
     <ion-input
       label="Attack"
       label-placement="fixed"
@@ -87,8 +81,8 @@
         <ion-spinner></ion-spinner>
       </ng-template>
     </div>
-  </ion-card-content>
-</ion-card>
+  </div>
+</div>
 
 <ng-container *ngIf="rankInfoForEvolutions() as rankInfoForEvolutions">
   <span>rank info exists</span>
