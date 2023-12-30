@@ -14,13 +14,14 @@ import { PokemonTypeColorMap } from '../../constants';
 import { Pokemon, PokemonRankInfoForEvolutions } from '../../interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RankService } from '../rank.service';
+import { ByRankCardsComponent } from './by-rank-cards/by-rank-cards.component';
 
 @Component({
   selector: 'app-rank-info',
   standalone: true,
   templateUrl: './rank-info.component.html',
   styleUrls: ['./rank-info.component.scss'],
-  imports: [CommonModule, IonChip, IonInput, IonSpinner],
+  imports: [CommonModule, IonChip, IonInput, IonSpinner, ByRankCardsComponent],
 })
 export class RankInfoComponent implements OnInit {
   @Input() set pokemon(pokemon: Pokemon) {

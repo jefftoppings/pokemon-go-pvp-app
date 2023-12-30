@@ -58,8 +58,13 @@ export interface EvolutionData {
   stats: Stats;
 }
 
+export interface Ranks {
+  greatLeagueRank: EvolutionData;
+  ultraLeagueRank: EvolutionData;
+}
+
 export interface PokemonData {
-  [pokemon: string]: EvolutionData;
+  [pokemon: string]: Ranks;
 }
 
 export interface PokemonRankInfoForEvolutions {

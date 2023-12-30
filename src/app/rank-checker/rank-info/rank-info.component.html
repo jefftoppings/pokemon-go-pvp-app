@@ -84,6 +84,9 @@
   </div>
 </div>
 
-<ng-container *ngIf="rankInfoForEvolutions() as rankInfoForEvolutions">
-  <span>rank info exists</span>
-</ng-container>
+<div
+  *ngIf="rankInfoForEvolutions() as rankInfoForEvolutions"
+  class="rank-cards-container"
+>
+  <app-by-rank-cards [rankInfo]="rankInfoForEvolutions"> </app-by-rank-cards>
+</div>

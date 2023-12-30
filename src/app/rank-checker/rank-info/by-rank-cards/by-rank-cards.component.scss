@@ -1,0 +1,84 @@
+.title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.rank-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .league-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    flex-shrink: 1;
+    &:not(:first-of-type) {
+      margin-top: 8px;
+    }
+    .great-title,
+    .ultra-title {
+      font-size: 18px;
+      border-radius: 50%;
+      color: white;
+      width: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .great-title {
+      background-color: #1c1dba;
+      border: 2px solid #d5110e;
+    }
+    .ultra-title {
+      background-color: #2e3034;
+      border: 2px solid #e2bb1b;
+    }
+    .rank {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .cp,
+    .level {
+      font-size: 12px;
+    }
+  }
+}
+.top-1 {
+  --background: linear-gradient(
+    137deg,
+    #d1953a,
+    #ffdc78 45%,
+    #e9c873 52%,
+    #cc933c
+  );
+  --color: black;
+}
+.top-2 {
+  --background: linear-gradient(
+    137deg,
+    #aba7a2,
+    #d1e3e2 45%,
+    #b8c5c6 52%,
+    #848b8c
+  );
+  --color: black;
+}
+.top-3 {
+  --background: linear-gradient(
+    137deg,
+    #c43a10,
+    #dec5a9 45%,
+    #e09268 52%,
+    #c43a10
+  );
+  --color: black;
+}
+.top-300 {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+}
+.bad {
+  --background: var(--ion-color-dark);
+  --color: var(--ion-color-dark-contrast);
+}
