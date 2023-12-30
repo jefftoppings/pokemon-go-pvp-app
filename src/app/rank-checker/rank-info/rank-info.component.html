@@ -1,0 +1,92 @@
+<div *ngIf="pokemon$ | async as pokemon" class="content-container">
+  <img
+    [alt]="pokemon.names['English']"
+    [src]="
+      pokemon.assets.image ||
+      'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/' +
+        pokemon.dexNr +
+        '.png'
+    "
+  />
+  <div class="inner-container">
+    <div *ngIf="badgeConfig$ | async as badges" class="badge-container">
+      <ion-chip
+        *ngFor="let badge of badges"
+        [ngStyle]="{
+            '--background': badge.color,
+          }"
+        >{{ badge.text }}</ion-chip
+      >
+    </div>
+    <div class="stats-container">
+      <div>
+        Attack: <span>{{ pokemon.stats.attack }}</span>
+      </div>
+      <div>
+        Defense: <span>{{ pokemon.stats.defense }}</span>
+      </div>
+      <div>
+        Stamina: <span>{{ pokemon.stats.stamina }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="iv-container">
+  <div class="title">Enter IV's</div>
+  <div class="inputs-container">
+    <ion-input
+      label="Attack"
+      label-placement="fixed"
+      fill="outline"
+      type="number"
+      min="0"
+      max="15"
+      autocomplete="off"
+      [clearInput]="true"
+      (ionInput)="handleAttackChange($event.detail.value || '')"
+    ></ion-input>
+    <ion-input
+      label="Defense"
+      label-placement="fixed"
+      fill="outline"
+      type="number"
+      min="0"
+      max="15"
+      autocomplete="off"
+      [clearInput]="true"
+      (ionInput)="handleDefenseChange($event.detail.value || '')"
+    ></ion-input>
+    <ion-input
+      label="Stamina"
+      label-placement="fixed"
+      fill="outline"
+      type="number"
+      min="0"
+      max="15"
+      autocomplete="off"
+      [clearInput]="true"
+      (ionInput)="handleStaminaChange($event.detail.value || '')"
+    ></ion-input>
+    <div class="button-container">
+      <div
+        *ngIf="!loading(); else loadingSpinner"
+        class="calculate-button"
+        [ngClass]="{ 'calculate-disabled': ivsFormGroup.invalid }"
+        (click)="handleCalculateClick()"
+      >
+        Calculate
+      </div>
+      <ng-template #loadingSpinner>
+        <ion-spinner></ion-spinner>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="rankInfoForEvolutions() as rankInfoForEvolutions"
+  class="rank-cards-container"
+>
+  <app-by-rank-cards [rankInfo]="rankInfoForEvolutions"> </app-by-rank-cards>
+</div>

@@ -1,0 +1,57 @@
+.content-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 8px 0;
+  img {
+    height: 100px;
+    width: auto;
+  }
+  .inner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .badge-container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0;
+    }
+    .stats-container {
+      font-size: 12px;
+    }
+  }
+}
+.iv-container {
+  .title {
+    margin: 16px 0;
+    font-size: 16px;
+  }
+}
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  .calculate-button {
+    background: var(--ion-color-primary);
+    color: var(--ion-text-color);
+    width: fit-content;
+    padding: 12px;
+    border-radius: 4px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .calculate-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(100%);
+  }
+}
+.rank-cards-container {
+  margin-top: 16px;
+}
