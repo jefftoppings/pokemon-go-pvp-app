@@ -3,9 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pokemon, PokemonRankInfoForEvolutions, Stats } from '../interfaces';
 
-// TODO call in production
-const API_URL = 'https://pgo-pvp-jtoppings.koyeb.app';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -18,7 +15,7 @@ export class RankService {
     });
     const params = new HttpParams().set('name', searchTerm).set('pageSize', 5);
 
-    return this.httpClient.get<Pokemon[]>('/api/search-pokemon', {
+    return this.httpClient.get<Pokemon[]>(`/api/search-pokemon`, {
       headers,
       params,
     });
@@ -38,7 +35,7 @@ export class RankService {
       .set('stamina', ivs.hp);
 
     return this.httpClient.get<PokemonRankInfoForEvolutions>(
-      '/api/get-ranks-for-iv-evolutions',
+      `/api/get-ranks-for-iv-evolutions`,
       {
         headers,
         params,
