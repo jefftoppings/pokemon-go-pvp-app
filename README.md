@@ -5,4 +5,4 @@ This project is the User Interface, built using Ionic and Angular. It is current
 
 To try it out, you can go here: https://ionic-rank-checker-2.netlify.app/
 
-![preview_screen](https://github.com/jefftoppings/pokemon-go-pvp-app/blob/master/readme-images/preview.png)
+![preview_screen](https://github.com/jefftoppings/pokemon-go-pvp-app/blob/master/readme-images/preview.png){:height="650px" width="auto"}
