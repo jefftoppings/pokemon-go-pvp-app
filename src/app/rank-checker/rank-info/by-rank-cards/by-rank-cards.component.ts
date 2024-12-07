@@ -12,6 +12,7 @@ import {
   IonCardTitle,
   IonCardContent,
   IonCardHeader,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { Observable, map } from 'rxjs';
 import { PokemonRankInfoForEvolutions, Ranks } from 'src/app/interfaces';
@@ -46,7 +47,7 @@ export class ByRankCardsComponent implements OnInit {
   );
   cardInfo$!: Observable<CardInfo[]>;
 
-  constructor() {}
+  constructor(private toast: IonToast) {}
 
   ngOnInit() {
     this.cardInfo$ = this.rankInfo$.pipe(
