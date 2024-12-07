@@ -38,9 +38,32 @@
       font-size: 20px;
       font-weight: bold;
     }
-    .cp,
-    .level {
-      font-size: 12px;
+    .bottom-container {
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid grey;
+      padding-top: 2px;
+      width: 100%;
+      justify-content: space-evenly;
+      align-items: center;
+      .cp,
+      .level {
+        font-size: 12px;
+      }
+      .copy-button {
+        background: #121212;
+        color: var(--ion-text-color);
+        width: fit-content;
+        height: fit-content;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
   }
 }
