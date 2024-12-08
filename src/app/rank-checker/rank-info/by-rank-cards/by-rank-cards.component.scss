@@ -6,6 +6,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  .copy-button {
+    display: block;
+    position: absolute;
+    right: 12px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
   .league-container {
     display: flex;
     flex-direction: column;
@@ -50,20 +58,6 @@
       .level {
         font-size: 12px;
       }
-      .copy-button {
-        background: #121212;
-        color: var(--ion-text-color);
-        width: fit-content;
-        height: fit-content;
-        border-radius: 4px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 4px;
-        &:hover {
-          cursor: pointer;
-        }
-      }
     }
   }
 }
@@ -104,4 +98,8 @@
 .bad {
   --background: var(--ion-color-dark);
   --color: var(--ion-color-dark-contrast);
+}
+
+.centered-toast {
+  text-align: center;
 }

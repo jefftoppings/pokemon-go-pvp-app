@@ -9,10 +9,9 @@ import {
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
   IonCard,
-  IonCardTitle,
   IonCardContent,
-  IonCardHeader,
-  IonToast,
+  ToastController,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { Observable, map } from 'rxjs';
 import { PokemonRankInfoForEvolutions, Ranks } from 'src/app/interfaces';
@@ -34,7 +33,7 @@ interface LeagueRankInfo {
   standalone: true,
   templateUrl: './by-rank-cards.component.html',
   styleUrls: ['./by-rank-cards.component.scss'],
-  imports: [CommonModule, IonCard, IonCardTitle, IonCardContent, IonCardHeader],
+  imports: [IonIcon, CommonModule, IonCard, IonCardContent],
 })
 export class ByRankCardsComponent implements OnInit {
   @Input() set rankInfo(rankInfo: PokemonRankInfoForEvolutions) {
@@ -47,7 +46,7 @@ export class ByRankCardsComponent implements OnInit {
   );
   cardInfo$!: Observable<CardInfo[]>;
 
-  constructor(private toast: IonToast) {}
+  constructor(private toastController: ToastController) {}
 
   ngOnInit() {
     this.cardInfo$ = this.rankInfo$.pipe(
@@ -78,7 +77,7 @@ export class ByRankCardsComponent implements OnInit {
     );
   }
 
-  copyRankString(rank: number, league: 'g' | 'u'): void {
+  async copyRankString(rank: number, league: 'g' | 'u'): Promise<void> {
     // Format will be ".<g|u><rank> <ivs>"
     const ivs =
       Object.values(this._rankInfo()?.rankForEvolutions || {})?.[0]
@@ -89,10 +88,23 @@ export class ByRankCardsComponent implements OnInit {
       navigator.clipboard
         .writeText(ivString)
         .then(() => {
-          console.log('SUCCESS!');
+          return this.toastController.create({
+            message: 'Copied successfully',
+            duration: 3000,
+            color: 'primary',
+            position: 'bottom',
+            cssClass: 'centered-toast',
+          });
         })
+        .then((toast) => toast.present())
         .catch(() => {
-          console.log('Error!');
+          return this.toastController.create({
+            message: 'An error occurred',
+            duration: 3000,
+            color: 'error',
+            position: 'bottom',
+            cssClass: 'centered-toast',
+          });
         });
     } else {
       this.copyToClipboardFallback(ivString);

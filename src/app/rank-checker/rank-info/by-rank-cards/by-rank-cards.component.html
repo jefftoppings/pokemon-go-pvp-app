@@ -11,6 +11,12 @@
     }"
     >
       <ion-card-content>
+        <ion-icon
+          class="copy-button"
+          name="copy-outline"
+          (click)="copyRankString(cardInfo.greatLeague.rank, 'g')"
+        >
+        </ion-icon>
         <div class="league-container">
           <div class="great-title">G</div>
           <div class="rank">Rank {{ cardInfo.greatLeague.rank }}</div>
@@ -18,12 +24,6 @@
             <div class="bottom-left">
               <div class="cp">CP {{ cardInfo.greatLeague.cp }}</div>
               <div class="level">Level {{ cardInfo.greatLeague.level }}</div>
-            </div>
-            <div
-              class="copy-button"
-              (click)="copyRankString(cardInfo.greatLeague.rank, 'g')"
-            >
-              Copy
             </div>
           </div>
         </div>
@@ -39,6 +39,12 @@
     }"
     >
       <ion-card-content>
+        <ion-icon
+          class="copy-button"
+          name="copy-outline"
+          (click)="copyRankString(cardInfo.greatLeague.rank, 'u')"
+        >
+        </ion-icon>
         <div class="league-container">
           <div class="ultra-title">U</div>
           <div class="rank">Rank {{ cardInfo.ultraLeague.rank }}</div>
@@ -46,12 +52,6 @@
             <div class="bottom-left">
               <div class="cp">CP {{ cardInfo.greatLeague.cp }}</div>
               <div class="level">Level {{ cardInfo.greatLeague.level }}</div>
-            </div>
-            <div
-              class="copy-button"
-              (click)="copyRankString(cardInfo.greatLeague.rank, 'u')"
-            >
-              Copy
             </div>
           </div>
         </div>
