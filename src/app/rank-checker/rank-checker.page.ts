@@ -89,7 +89,6 @@ export class RankCheckerPage {
   async selectFirstSearchTerm(): Promise<void> {
     await firstValueFrom(this.results$).then((results) => {
       if (results[0]) {
-        console.log('my async func');
         this.handlePokemonSelected(results[0]);
       }
     });
