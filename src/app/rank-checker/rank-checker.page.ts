@@ -19,6 +19,7 @@ import {
   catchError,
   debounceTime,
   finalize,
+  firstValueFrom,
   from,
   map,
   startWith,
@@ -76,19 +77,30 @@ export class RankCheckerPage {
       catchError((error) => {
         return from(this.showErrorMessage(error)).pipe(map(() => []));
       }),
-      tap((results) => {
-        this.loading.set(false);
-        if (cachedSearchTerm && results[0]) {
-          this.handlePokemonSelected(results[0]);
-        }
-      }),
+      tap(() => this.loading.set(false)),
       finalize(() => this.loading.set(false))
     );
+
+    if (cachedSearchTerm) {
+      this.selectFirstSearchTerm();
+    }
+  }
+
+  async selectFirstSearchTerm(): Promise<void> {
+    await firstValueFrom(this.results$).then((results) => {
+      if (results[0]) {
+        this.handlePokemonSelected(results[0]);
+      }
+    });
   }
 
   handleSearchTermChange(value: string): void {
     this.searchControl.setValue(value);
-    this.rankService.setSearchTerm(value);
+    if (value) {
+      this.rankService.setSearchTerm(value);
+    } else {
+      this.rankService.clearSearchAndIvs();
+    }
     this.showResults.set(true);
     this.selectedPokemon.set(null);
   }

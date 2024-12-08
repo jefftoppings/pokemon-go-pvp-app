@@ -85,4 +85,8 @@ export class RankService {
       return undefined;
     }
   }
+
+  clearSearchAndIvs(): void {
+    localStorage.clear()
+  }
 }
