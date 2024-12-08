@@ -9,10 +9,6 @@ import {
   IonInput,
   IonThumbnail,
   IonLabel,
-  IonBadge,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonList,
   IonItem,
   IonProgressBar,
@@ -25,6 +21,7 @@ import {
   finalize,
   from,
   map,
+  startWith,
   switchMap,
   tap,
 } from 'rxjs';
@@ -47,10 +44,6 @@ import { RankInfoComponent } from './rank-info/rank-info.component';
     IonInput,
     IonThumbnail,
     IonLabel,
-    IonBadge,
-    IonGrid,
-    IonRow,
-    IonCol,
     IonList,
     IonItem,
     IonProgressBar,
@@ -60,7 +53,7 @@ import { RankInfoComponent } from './rank-info/rank-info.component';
   ],
 })
 export class RankCheckerPage {
-  searchTerm = '';
+  searchTerm = this.rankService.getSearchTerm();
   private searchControl: FormControl<string | null> = new FormControl<
     string | null
   >('');
@@ -73,7 +66,9 @@ export class RankCheckerPage {
     private rankService: RankService,
     private toastController: ToastController
   ) {
+    const cachedSearchTerm = this.rankService.getSearchTerm();
     this.results$ = this.searchControl.valueChanges.pipe(
+      startWith(cachedSearchTerm),
       takeUntilDestroyed(),
       debounceTime(200),
       tap(() => this.loading.set(true)),
@@ -81,19 +76,26 @@ export class RankCheckerPage {
       catchError((error) => {
         return from(this.showErrorMessage(error)).pipe(map(() => []));
       }),
-      tap(() => this.loading.set(false)),
+      tap((results) => {
+        this.loading.set(false);
+        if (cachedSearchTerm && results[0]) {
+          this.handlePokemonSelected(results[0]);
+        }
+      }),
       finalize(() => this.loading.set(false))
     );
   }
 
   handleSearchTermChange(value: string): void {
     this.searchControl.setValue(value);
+    this.rankService.setSearchTerm(value);
     this.showResults.set(true);
     this.selectedPokemon.set(null);
   }
 
   handlePokemonSelected(pokemon: Pokemon): void {
     this.selectedPokemon.set(pokemon);
+    this.rankService.setSearchTerm(pokemon.names?.['English'] || '');
     this.searchTerm = pokemon.names['English'];
     this.showResults.set(false);
   }

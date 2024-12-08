@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   Input,
   OnInit,
   WritableSignal,
+  inject,
   signal,
 } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { IonChip, IonInput, IonSpinner } from '@ionic/angular/standalone';
 import { ToastController } from '@ionic/angular';
 import { Observable, catchError, from, map, of, switchMap, take } from 'rxjs';
@@ -53,6 +55,7 @@ export class RankInfoComponent implements OnInit {
   rankInfoForEvolutions: WritableSignal<PokemonRankInfoForEvolutions | null> =
     signal(null);
   loading: WritableSignal<boolean> = signal(false);
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private rankService: RankService,
@@ -81,6 +84,15 @@ export class RankInfoComponent implements OnInit {
         return null;
       })
     );
+
+    this.ivsFormGroup.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((ivs) => this.rankService.setIvs(ivs));
+
+    const initialIvs = this.rankService.getIVS();
+    if (initialIvs) {
+      this.ivsFormGroup.patchValue(initialIvs);
+    }
   }
 
   handleAttackChange(value: string) {

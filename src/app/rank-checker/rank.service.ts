@@ -1,13 +1,16 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pokemon, PokemonRankInfoForEvolutions, Stats } from '../interfaces';
+
+const SEARCH_TERM_KEY = 'searchTerm';
+const IVS_KEY = 'ivs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RankService {
-  constructor(private httpClient: HttpClient) {}
+  private httpClient = inject(HttpClient);
 
   searchPokemon(searchTerm: string): Observable<Pokemon[]> {
     const headers = new HttpHeaders({
@@ -41,5 +44,45 @@ export class RankService {
         params,
       }
     );
+  }
+
+  setSearchTerm(searchTerm: string): void {
+    try {
+      const serializedValue = JSON.stringify(searchTerm);
+      localStorage.setItem(SEARCH_TERM_KEY, serializedValue);
+    } catch (error) {
+      console.error('Error saving searchTerm to localStorage');
+    }
+  }
+
+  getSearchTerm(): string {
+    try {
+      const serializedValue = localStorage.getItem(SEARCH_TERM_KEY);
+      if (!serializedValue) return '';
+      return JSON.parse(serializedValue);
+    } catch (error) {
+      console.error('Error reading searchTerm from localStorage');
+      return '';
+    }
+  }
+
+  setIvs(ivs: { attack: number; defense: number; stamina: number }): void {
+    try {
+      const serializedValue = JSON.stringify(ivs);
+      localStorage.setItem(IVS_KEY, serializedValue);
+    } catch (error) {
+      console.error('Error saving IVS to localStorage');
+    }
+  }
+
+  getIVS(): { attack: number; defense: number; stamina: number } | undefined {
+    try {
+      const serializedValue = localStorage.getItem(IVS_KEY);
+      if (!serializedValue) return undefined;
+      return JSON.parse(serializedValue);
+    } catch (error) {
+      console.error('Error reading ivs from localStorage');
+      return undefined;
+    }
   }
 }
