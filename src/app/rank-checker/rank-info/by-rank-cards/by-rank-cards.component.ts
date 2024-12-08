@@ -91,14 +91,20 @@ export class ByRankCardsComponent implements OnInit {
           return this.toastController.create({
             message: 'Copied successfully',
             duration: 3000,
-            color: 'success',
+            color: 'primary',
             position: 'bottom',
             cssClass: 'centered-toast',
           });
         })
         .then((toast) => toast.present())
         .catch(() => {
-          console.log('Error!');
+          return this.toastController.create({
+            message: 'An error occurred',
+            duration: 3000,
+            color: 'error',
+            position: 'bottom',
+            cssClass: 'centered-toast',
+          });
         });
     } else {
       this.copyToClipboardFallback(ivString);

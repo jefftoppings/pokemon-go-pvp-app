@@ -6,6 +6,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  .copy-button {
+    display: block;
+    position: absolute;
+    right: 12px;
+  }
   .league-container {
     display: flex;
     flex-direction: column;
