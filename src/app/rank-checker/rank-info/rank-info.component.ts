@@ -52,8 +52,9 @@ export class RankInfoComponent implements OnInit {
       Validators.max(15),
     ]),
   });
-  rankInfoForEvolutions: WritableSignal<PokemonRankInfoForEvolutions | null> =
-    signal(null);
+  rankInfoForEvolutions: WritableSignal<
+    PokemonRankInfoForEvolutions | undefined
+  > = signal(this.rankService.getRankInfoForEvolutionsCache());
   loading: WritableSignal<boolean> = signal(false);
   private destroyRef = inject(DestroyRef);
 
@@ -87,9 +88,9 @@ export class RankInfoComponent implements OnInit {
 
     this.ivsFormGroup.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((ivs) => this.rankService.setIvs(ivs));
+      .subscribe((ivs) => this.rankService.setIvsCache(ivs));
 
-    const initialIvs = this.rankService.getIVS();
+    const initialIvs = this.rankService.getIvsCache();
     if (initialIvs) {
       this.ivsFormGroup.patchValue(initialIvs);
     }
@@ -127,7 +128,7 @@ export class RankInfoComponent implements OnInit {
       )
       .subscribe({
         next: (rankInfoForEvolutions) => {
-          this.rankInfoForEvolutions.set(rankInfoForEvolutions);
+          this.rankInfoForEvolutions.set(rankInfoForEvolutions || undefined);
           this.loading.set(false);
         },
         error: () => this.loading.set(false),
