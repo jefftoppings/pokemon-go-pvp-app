@@ -10,6 +10,9 @@
     display: block;
     position: absolute;
     right: 12px;
+    &:hover {
+      cursor: pointer;
+    }
   }
   .league-container {
     display: flex;
