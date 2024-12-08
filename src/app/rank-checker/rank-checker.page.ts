@@ -9,10 +9,6 @@ import {
   IonInput,
   IonThumbnail,
   IonLabel,
-  IonBadge,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonList,
   IonItem,
   IonProgressBar,
@@ -23,8 +19,10 @@ import {
   catchError,
   debounceTime,
   finalize,
+  firstValueFrom,
   from,
   map,
+  startWith,
   switchMap,
   tap,
 } from 'rxjs';
@@ -47,10 +45,6 @@ import { RankInfoComponent } from './rank-info/rank-info.component';
     IonInput,
     IonThumbnail,
     IonLabel,
-    IonBadge,
-    IonGrid,
-    IonRow,
-    IonCol,
     IonList,
     IonItem,
     IonProgressBar,
@@ -60,7 +54,7 @@ import { RankInfoComponent } from './rank-info/rank-info.component';
   ],
 })
 export class RankCheckerPage {
-  searchTerm = '';
+  searchTerm = this.rankService.getSearchTermCache();
   private searchControl: FormControl<string | null> = new FormControl<
     string | null
   >('');
@@ -73,7 +67,9 @@ export class RankCheckerPage {
     private rankService: RankService,
     private toastController: ToastController
   ) {
+    const cachedSearchTerm = this.rankService.getSearchTermCache();
     this.results$ = this.searchControl.valueChanges.pipe(
+      startWith(cachedSearchTerm),
       takeUntilDestroyed(),
       debounceTime(200),
       tap(() => this.loading.set(true)),
@@ -84,16 +80,35 @@ export class RankCheckerPage {
       tap(() => this.loading.set(false)),
       finalize(() => this.loading.set(false))
     );
+
+    if (cachedSearchTerm) {
+      this.selectFirstSearchTerm();
+    }
+  }
+
+  async selectFirstSearchTerm(): Promise<void> {
+    await firstValueFrom(this.results$).then((results) => {
+      if (results[0]) {
+        console.log('my async func');
+        this.handlePokemonSelected(results[0]);
+      }
+    });
   }
 
   handleSearchTermChange(value: string): void {
     this.searchControl.setValue(value);
+    if (value) {
+      this.rankService.setSearchTermCache(value);
+    } else {
+      this.rankService.clearRankServiceCache();
+    }
     this.showResults.set(true);
     this.selectedPokemon.set(null);
   }
 
   handlePokemonSelected(pokemon: Pokemon): void {
     this.selectedPokemon.set(pokemon);
+    this.rankService.setSearchTermCache(pokemon.names?.['English'] || '');
     this.searchTerm = pokemon.names['English'];
     this.showResults.set(false);
   }

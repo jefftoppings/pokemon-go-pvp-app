@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   Input,
   OnInit,
   WritableSignal,
+  inject,
   signal,
 } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { IonChip, IonInput, IonSpinner } from '@ionic/angular/standalone';
 import { ToastController } from '@ionic/angular';
 import { Observable, catchError, from, map, of, switchMap, take } from 'rxjs';
@@ -50,9 +52,11 @@ export class RankInfoComponent implements OnInit {
       Validators.max(15),
     ]),
   });
-  rankInfoForEvolutions: WritableSignal<PokemonRankInfoForEvolutions | null> =
-    signal(null);
+  rankInfoForEvolutions: WritableSignal<
+    PokemonRankInfoForEvolutions | undefined
+  > = signal(this.rankService.getRankInfoForEvolutionsCache());
   loading: WritableSignal<boolean> = signal(false);
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private rankService: RankService,
@@ -81,6 +85,15 @@ export class RankInfoComponent implements OnInit {
         return null;
       })
     );
+
+    this.ivsFormGroup.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((ivs) => this.rankService.setIvsCache(ivs));
+
+    const initialIvs = this.rankService.getIvsCache();
+    if (initialIvs) {
+      this.ivsFormGroup.patchValue(initialIvs);
+    }
   }
 
   handleAttackChange(value: string) {
@@ -115,7 +128,7 @@ export class RankInfoComponent implements OnInit {
       )
       .subscribe({
         next: (rankInfoForEvolutions) => {
-          this.rankInfoForEvolutions.set(rankInfoForEvolutions);
+          this.rankInfoForEvolutions.set(rankInfoForEvolutions || undefined);
           this.loading.set(false);
         },
         error: () => this.loading.set(false),
