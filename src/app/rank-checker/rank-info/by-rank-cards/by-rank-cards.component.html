@@ -9,6 +9,7 @@
       'top-300': cardInfo.greatLeague.rank > 3 && cardInfo.greatLeague.rank <= 300,
       'bad': cardInfo.greatLeague.rank > 300,
     }"
+      (click)="copyRankString(cardInfo.greatLeague.rank, 'g')"
     >
       <ion-card-content>
         <ion-icon
@@ -37,12 +38,13 @@
       'top-300': cardInfo.ultraLeague.rank > 3 && cardInfo.ultraLeague.rank <= 300,
       'bad': cardInfo.ultraLeague.rank > 300,
     }"
+      (click)="copyRankString(cardInfo.ultraLeague.rank, 'u')"
     >
       <ion-card-content>
         <ion-icon
           class="copy-button"
           name="copy-outline"
-          (click)="copyRankString(cardInfo.greatLeague.rank, 'u')"
+          (click)="copyRankString(cardInfo.ultraLeague.rank, 'u')"
         >
         </ion-icon>
         <div class="league-container">

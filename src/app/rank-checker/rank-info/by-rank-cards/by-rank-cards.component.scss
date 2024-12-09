@@ -6,6 +6,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  ion-card {
+    &:hover {
+      cursor: pointer;
+    }
+  }
   .copy-button {
     display: block;
     position: absolute;
