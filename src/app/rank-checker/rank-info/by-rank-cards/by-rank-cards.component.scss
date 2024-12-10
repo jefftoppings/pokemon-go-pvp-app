@@ -6,22 +6,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  .inner-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    .copy-container {
-      padding: 6px 12px 0;
-      margin-bottom: -4px;
-      border: 1px solid var(--ion-border-color);
-      color: var(--ion-text-color);
-      border-radius: 4px;
-      .copy-button {
-        &:hover {
-          cursor: pointer;
-        }
-      }
+  ion-card {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .copy-button {
+    display: block;
+    position: absolute;
+    right: 12px;
+    &:hover {
+      cursor: pointer;
     }
   }
   .league-container {

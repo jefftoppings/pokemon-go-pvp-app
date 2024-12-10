@@ -82,7 +82,14 @@ export class ByRankCardsComponent implements OnInit {
     const ivs =
       Object.values(this._rankInfo()?.rankForEvolutions || {})?.[0]
         ?.greatLeagueRank.ivs || '';
-    const ivString = `.${league}${rank} ${ivs}`;
+    const circledIvs = ivs.split('/').reduce((prev, curr) => {
+      if (curr) {
+        const asNumber = parseInt(curr);
+        return prev + this.getCircledNumber(asNumber);
+      }
+      return prev;
+    }, '');
+    const ivString = `.${league}${rank} ${circledIvs}`;
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard
@@ -124,5 +131,15 @@ export class ByRankCardsComponent implements OnInit {
     } finally {
       document.body.removeChild(textarea);
     }
+  }
+
+  /**
+   * Returns the number, circled, as its unicode
+   * Example: 15 = ⑮
+   * Will return undefined if number is outside of 0-15 inclusive
+   */
+  getCircledNumber(number: number): string | undefined {
+    if (number < 0 || number > 15) return undefined;
+    return String.fromCharCode(9311 + number);
   }
 }
