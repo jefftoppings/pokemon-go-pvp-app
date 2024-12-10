@@ -1,69 +1,63 @@
 <ng-container *ngFor="let cardInfo of cardInfo$ | async">
   <div class="title">{{ cardInfo.pokemon }}</div>
   <div class="rank-container">
-    <div class="inner-container">
-      <div class="copy-container">
+    <ion-card
+      [ngClass]="{
+      'top-1': cardInfo.greatLeague.rank === 1,
+      'top-2': cardInfo.greatLeague.rank === 2,
+      'top-3': cardInfo.greatLeague.rank === 3,
+      'top-300': cardInfo.greatLeague.rank > 3 && cardInfo.greatLeague.rank <= 300,
+      'bad': cardInfo.greatLeague.rank > 300,
+    }"
+      (click)="copyRankString(cardInfo.greatLeague.rank, 'g')"
+    >
+      <ion-card-content>
         <ion-icon
           class="copy-button"
           name="copy-outline"
           (click)="copyRankString(cardInfo.greatLeague.rank, 'g')"
         >
         </ion-icon>
-      </div>
-      <ion-card
-        [ngClass]="{
-        'top-1': cardInfo.greatLeague.rank === 1,
-        'top-2': cardInfo.greatLeague.rank === 2,
-        'top-3': cardInfo.greatLeague.rank === 3,
-        'top-300': cardInfo.greatLeague.rank > 3 && cardInfo.greatLeague.rank <= 300,
-        'bad': cardInfo.greatLeague.rank > 300,
-      }"
-      >
-        <ion-card-content>
-          <div class="league-container">
-            <div class="great-title">G</div>
-            <div class="rank">Rank {{ cardInfo.greatLeague.rank }}</div>
-            <div class="bottom-container">
-              <div class="bottom-left">
-                <div class="cp">CP {{ cardInfo.greatLeague.cp }}</div>
-                <div class="level">Level {{ cardInfo.greatLeague.level }}</div>
-              </div>
+        <div class="league-container">
+          <div class="great-title">G</div>
+          <div class="rank">Rank {{ cardInfo.greatLeague.rank }}</div>
+          <div class="bottom-container">
+            <div class="bottom-left">
+              <div class="cp">CP {{ cardInfo.greatLeague.cp }}</div>
+              <div class="level">Level {{ cardInfo.greatLeague.level }}</div>
             </div>
           </div>
-        </ion-card-content>
-      </ion-card>
-    </div>
-    <div class="inner-container">
-      <div class="copy-container">
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card
+      [ngClass]="{
+      'top-1': cardInfo.ultraLeague.rank === 1,
+      'top-2': cardInfo.ultraLeague.rank === 2,
+      'top-3': cardInfo.ultraLeague.rank === 3,
+      'top-300': cardInfo.ultraLeague.rank > 3 && cardInfo.ultraLeague.rank <= 300,
+      'bad': cardInfo.ultraLeague.rank > 300,
+    }"
+      (click)="copyRankString(cardInfo.ultraLeague.rank, 'u')"
+    >
+      <ion-card-content>
         <ion-icon
           class="copy-button"
           name="copy-outline"
           (click)="copyRankString(cardInfo.ultraLeague.rank, 'u')"
         >
         </ion-icon>
-      </div>
-      <ion-card
-        [ngClass]="{
-        'top-1': cardInfo.ultraLeague.rank === 1,
-        'top-2': cardInfo.ultraLeague.rank === 2,
-        'top-3': cardInfo.ultraLeague.rank === 3,
-        'top-300': cardInfo.ultraLeague.rank > 3 && cardInfo.ultraLeague.rank <= 300,
-        'bad': cardInfo.ultraLeague.rank > 300,
-      }"
-      >
-        <ion-card-content>
-          <div class="league-container">
-            <div class="ultra-title">U</div>
-            <div class="rank">Rank {{ cardInfo.ultraLeague.rank }}</div>
-            <div class="bottom-container">
-              <div class="bottom-left">
-                <div class="cp">CP {{ cardInfo.ultraLeague.cp }}</div>
-                <div class="level">Level {{ cardInfo.ultraLeague.level }}</div>
-              </div>
+        <div class="league-container">
+          <div class="ultra-title">U</div>
+          <div class="rank">Rank {{ cardInfo.ultraLeague.rank }}</div>
+          <div class="bottom-container">
+            <div class="bottom-left">
+              <div class="cp">CP {{ cardInfo.greatLeague.cp }}</div>
+              <div class="level">Level {{ cardInfo.greatLeague.level }}</div>
             </div>
           </div>
-        </ion-card-content>
-      </ion-card>
-    </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
   </div>
 </ng-container>
